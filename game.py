@@ -41,19 +41,21 @@ class Game:
                 return True
         return False
 
-    def __find_farthest_pos(self, pos, get_prev_tile, boundry_func):
-        if boundry_func(pos):
-            return
+    def __find_farthest_pos(self, pos, get_prev_tile_f):
+        prev_pos = get_prev_tile_f(pos)
+        while (not utils.out_of_board(pos) and
+                self.__board[pos] == 0):
+                pos = prev_pos
+                prev_pos = get_prev_tile_f(prev_pos)
+        return pos
 
 
-    def __make_move(self, tiles_order, boundry_func):
-        walls_position = []
-        for i,j in tiles_order:
-            if boundry_func(i,j):
-                walls_position.append((i,j))
-            elif self.__board[pos] == 0:
+    def __make_move(self, tiles_order, boundry_func, start_of_line_f):
+        for curr_pos in tiles_order:
+            farthest_pos = self.__find_farthest_pos(curr_pos)
+            if pos == farthest_pos:
                 continue
-            elif
+            elif self.__board[pos] =
 
     def return_board(self):
         return self.__board
