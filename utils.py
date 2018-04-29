@@ -1,4 +1,4 @@
-from const import BOARD_ROWS, BOARD_COLUMNS
+from const import BOARD_ROWS, BOARD_COLUMNS, UP, RIGHT, DOWN, LEFT
 # UP move functinos
 def get_prev_tile_up(i, j):
     return (i-1, j)
@@ -31,7 +31,15 @@ def is_boundry_left(i, j):
 def start_of_line_left(i, j):
     return (i, 0)
 
-def out_of_board(i,j):
+# Dictionaries
+get_prev_dict = {UP: get_prev_tile_up,
+                 LEFT: get_prev_tile_left,
+                 DOWN: get_prev_tile_down,
+                 RIGHT: get_prev_tile_right
+                }
+
+def out_of_board(pos):
+    i, j = pos
     return (i >= BOARD_ROWS or
             i < 0 or
             j >= BOARD_COLUMNS or
