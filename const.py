@@ -22,3 +22,10 @@ TILES_DOWN_ORDER = [(x, y) for x in reversed(range(BOARD_ROWS))
 
 TILES_LEFT_ORDER = [(x, y) for y in range(BOARD_COLUMNS)
                     for x in reversed(range(BOARD_ROWS))]
+
+
+# Dictionaries for easy access
+TILE_ORDER_DICT = {UP: TILES_UP_ORDER,
+                   RIGHT: TILES_RIGHT_ORDER,
+                   DOWN: TILES_DOWN_ORDER,
+                   LEFT: TILES_LEFT_ORDER}
