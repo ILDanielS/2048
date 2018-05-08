@@ -11,11 +11,14 @@ class Tile:
         self.__value = value
 
     def can_merge(self, tile):
-        return self.value == tile.value
+        return self.value == tile.get_value
 
     def merge(self, tile):
         self.__value *= 2
         self.__moved = true
+
+    def get_value(self,tile):
+        return self.__value
 
     def reset_tile_round_end(self):
         self.__moved = false
@@ -68,18 +71,11 @@ class Game:
             prev_pos = get_prev_tile_f(prev_pos)
         return pos, prev_pos
 
-<<<<<<< HEAD
 
     def __make_move(self, tiles_order, boundry_func, start_of_line_f):
         for curr_pos in list(filter(lambda x: self.__board[x] != 0, tiles_order):
             farthest_pos = self.__find_farthest_pos(curr_pos)
             if pos == farthest_pos:
-=======
-    def __make_move(self, tiles_order, get_prev_tile_f):
-        for curr_pos in filter(lambda x: x != 0, tiles_order):
-            farthest_pos, prev_farthest_pos = self.__find_farthest_pos(curr_pos, get_prev_tile_f)
-            if curr_pos == farthest_pos:
->>>>>>> 538075fccd9d35e67a39b3550ca3172d491714af
                 continue
             elif self.__board[farthest_pos] == 0:
                 self.__board[farthest_pos], self.__board[curr_pos] = \
