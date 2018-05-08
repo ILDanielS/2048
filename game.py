@@ -1,6 +1,25 @@
 from random import randint, shuffle
 from const import *
 import utils
+
+class Tile:
+    def __init__(self, value=0):
+        self.__value = value
+        self.__moved = False
+
+    def set_value(self, value):
+        self.__value = value
+
+    def can_merge(self, tile):
+        return self.value == tile.value
+
+    def merge(self, tile):
+        self.__value *= 2
+        self.__moved = true
+
+    def reset_tile_round_end(self):
+        self.__moved = false
+
 class Game:
     __score = 0
     __startTiles = 2
@@ -51,7 +70,7 @@ class Game:
 
 
     def __make_move(self, tiles_order, boundry_func, start_of_line_f):
-        for curr_pos in tiles_order:
+        for curr_pos in list(filter(lambda x: self.__board[x] != 0, tiles_order):
             farthest_pos = self.__find_farthest_pos(curr_pos)
             if pos == farthest_pos:
                 continue

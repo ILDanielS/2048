@@ -1,6 +1,6 @@
 ''' Consts and some more definitions to use in game module '''
 # Board setup
-EMPTY = 0
+EMPTY = None
 BOARD_ROWS = 4
 BOARD_COLUMNS = 4
 START_TILES = 2
