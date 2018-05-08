@@ -77,9 +77,14 @@ class Game:
         return pos, prev_pos
 
 
-    def __make_move(self, tiles_order, boundry_func, start_of_line_f):
-        for curr_pos in list(filter(lambda x: self.__board[x] != 0, tiles_order):
-            farthest_pos, prev_farthest_pos = self.__find_farthest_pos(curr_pos)
+    def __move_tiles(self, tiles_order, direction):
+
+        get_prev_tile_f = utils.GET_PREV_DICT[direction]
+
+        for curr_pos in filter(lambda x: self.__board[x] != EMPTY
+                                    , tiles_order):
+            farthest_pos, prev_farthest_pos = self.__find_farthest_pos(curr_pos,
+                                                                get_prev_tile_f)
             if pos == farthest_pos:
                 continue
             elif self.__board[farthest_pos] == EMPTY:
@@ -111,8 +116,11 @@ class Game:
             moves.append(LEFT)
         return moves
 
-    def make_move(self):
-
+    def make_move(self, direction):
+        tiles_order = TILE_ORDER_DICT[direction]
+        self.__move_tiles(tiles_order, direction)
+        for pos in filter(lambda pos: self.__board[pos] != EMPTY, tile_order):
+            self.__board[pos].reset_tile_round_end()
 
     def start_game(self):
         self.__generate_tile(START_TILES)

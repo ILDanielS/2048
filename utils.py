@@ -32,7 +32,7 @@ def start_of_line_left(i, j):
     return (i, 0)
 
 # Dictionaries
-get_prev_dict = {UP: get_prev_tile_up,
+GET_PREV_DICT = {UP: get_prev_tile_up,
                  LEFT: get_prev_tile_left,
                  DOWN: get_prev_tile_down,
                  RIGHT: get_prev_tile_right
