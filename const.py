@@ -6,10 +6,13 @@ BOARD_COLUMNS = 4
 START_TILES = 2
 
 # Moves
-UP = 0
-RIGHT = 1
-DOWN = 2
-LEFT = 3
+UP = 'w'
+RIGHT = 'd'
+DOWN = 's'
+LEFT = 'a'
+
+direction_list = [UP,RIGHT,DOWN,LEFT]
+# Keyboard character to direction
 
 TILES_UP_ORDER = [(x, y) for x in range(BOARD_ROWS)
                   for y in range(BOARD_COLUMNS)]
