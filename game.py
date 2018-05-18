@@ -2,8 +2,9 @@ import sys
 from random import randint, shuffle
 from const import *
 import utils
-
+import pdb
 class Tile:
+
     def __init__(self, value=0):
         self.__value = value
         self.__moved = False
@@ -70,14 +71,21 @@ class Game:
                 return True
         return False
 
-    def __find_farthest_pos(self, pos, get_prev_tile_f):
-        prev_pos = get_prev_tile_f(*pos)
-        while (not utils.out_of_board(pos) and
-               self.__board[pos] == EMPTY):
-            pos = prev_pos
-            prev_pos = get_prev_tile_f(prev_pos)
-        return pos, prev_pos
+    # def __find_farthest_pos(self, pos, get_prev_tile_f):
+    #     prev_pos = pos#get_prev_tile_f(*pos)
+    #     pos = get_prev_tile_f(*pos)
+    #     while not utils.out_of_board(pos) and
+    #               self.__board[prev_pos] == EMPTY:
+    #         pos = prev_pos
+    #         prev_pos = get_prev_tile_f(*prev_pos)
+    #     return pos, prev_pos
 
+    def __find_farthest_pos(self, pos, get_prev_tile_f):
+        prev_pos = pos
+        pos = get_prev_tile_f(*pos)
+        while not utils.out_of_board(pos) and self.__board[pos] == EMPTY:
+            prev_pos, pos = pos, get_prev_tile_f(*pos)
+        return pos, prev_pos
 
     def __move_tiles(self, tiles_order, direction):
 
@@ -85,20 +93,27 @@ class Game:
 
         for curr_pos in filter(lambda x: self.__board[x] != EMPTY
                                , tiles_order):
+            # pdb.set_trace()
             farthest_pos, prev_farthest_pos = \
                                     self.__find_farthest_pos(curr_pos,
                                                              get_prev_tile_f)
-            if curr_pos == farthest_pos:
-                continue
-            elif self.__board[farthest_pos] == EMPTY:
-                self.__board[farthest_pos], self.__board[curr_pos] = \
-                self.__board[curr_pos], self.__board[farthest_pos]
-            elif self.__board[farthest_pos].can_merge(self.__board[curr_pos]):
+            if utils.out_of_board(farthest_pos) or self.__board[farthest_pos].get_value() != self.__board[curr_pos].get_value():
+                self.__board[curr_pos], self.__board[prev_farthest_pos] = \
+                                          EMPTY, self.__board[curr_pos]
+            else:
                 self.__board[farthest_pos].merge()
                 self.__board[curr_pos] = EMPTY
-            else:
-                self.__board[prev_farthest_pos] = self.__board[curr_pos]
-                self.__board[curr_pos] = EMPTY
+            # if curr_pos == farthest_pos:
+            #     continue
+            # elif self.__board[farthest_pos] == EMPTY:
+            #     self.__board[farthest_pos], self.__board[curr_pos] = \
+            #     self.__board[curr_pos], self.__board[farthest_pos]
+            # elif self.__board[farthest_pos].can_merge(self.__board[curr_pos]):
+            #     self.__board[farthest_pos].merge()
+            #     self.__board[curr_pos] = EMPTY
+            # else:
+            #     self.__board[prev_farthest_pos] = self.__board[curr_pos]
+            #     self.__board[curr_pos] = EMPTY
 
     def return_board(self):
         return self.__board
