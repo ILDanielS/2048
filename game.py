@@ -103,17 +103,6 @@ class Game:
             else:
                 self.__board[farthest_pos].merge()
                 self.__board[curr_pos] = EMPTY
-            # if curr_pos == farthest_pos:
-            #     continue
-            # elif self.__board[farthest_pos] == EMPTY:
-            #     self.__board[farthest_pos], self.__board[curr_pos] = \
-            #     self.__board[curr_pos], self.__board[farthest_pos]
-            # elif self.__board[farthest_pos].can_merge(self.__board[curr_pos]):
-            #     self.__board[farthest_pos].merge()
-            #     self.__board[curr_pos] = EMPTY
-            # else:
-            #     self.__board[prev_farthest_pos] = self.__board[curr_pos]
-            #     self.__board[curr_pos] = EMPTY
 
     def return_board(self):
         return self.__board
