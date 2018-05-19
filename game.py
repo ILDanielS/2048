@@ -1,8 +1,9 @@
 import sys
+import os
 from random import randint, shuffle
 from const import *
 import utils
-import pdb
+# import pdb
 class Tile:
 
     def __init__(self, value=0):
@@ -60,25 +61,17 @@ class Game:
                 self.__board[pos] = Tile()
                 self.__board[pos].set_random_value()
 
-    def __is_move_possible(self, tile_order, prev_tile_func, boundry_func):
-        for curr_pos in tile_order:
-            prev_pos = prev_tile_func(*curr_pos)
-            if self.__board[curr_pos] == EMPTY:
-                continue
-            if (boundry_func(*prev_pos) and
-                    (self.__board[curr_pos] == self.__board[prev_pos] or
-                     self.__board[prev_pos] == EMPTY)):
+    def __is_move_possible(self, tile_order, prev_tile_func):
+        for curr_pos in filter(lambda x: self.__board[x] != EMPTY, tile_order):
+            far_pos, pre_far_pos = self.__find_farthest_pos(curr_pos, prev_tile_func)
+            is_out_bound = utils.out_of_board(far_pos)
+            can_move = pre_far_pos != curr_pos
+            # pdb.set_trace()
+            if can_move or \
+            not is_out_bound and \
+            self.__board[curr_pos].can_merge(self.__board[far_pos]):
                 return True
         return False
-
-    # def __find_farthest_pos(self, pos, get_prev_tile_f):
-    #     prev_pos = pos#get_prev_tile_f(*pos)
-    #     pos = get_prev_tile_f(*pos)
-    #     while not utils.out_of_board(pos) and
-    #               self.__board[prev_pos] == EMPTY:
-    #         pos = prev_pos
-    #         prev_pos = get_prev_tile_f(*prev_pos)
-    #     return pos, prev_pos
 
     def __find_farthest_pos(self, pos, get_prev_tile_f):
         prev_pos = pos
@@ -88,61 +81,43 @@ class Game:
         return pos, prev_pos
 
     def __move_tiles(self, tiles_order, direction):
-
         get_prev_tile_f = utils.GET_PREV_DICT[direction]
-
         for curr_pos in filter(lambda x: self.__board[x] != EMPTY
                                , tiles_order):
             # pdb.set_trace()
             farthest_pos, prev_farthest_pos = \
                                     self.__find_farthest_pos(curr_pos,
                                                              get_prev_tile_f)
-            if utils.out_of_board(farthest_pos) or self.__board[farthest_pos].get_value() != self.__board[curr_pos].get_value():
+            if (utils.out_of_board(farthest_pos) or
+            not self.__board[farthest_pos].can_merge(self.__board[curr_pos])):
                 self.__board[curr_pos], self.__board[prev_farthest_pos] = \
                                           EMPTY, self.__board[curr_pos]
             else:
                 self.__board[farthest_pos].merge()
                 self.__board[curr_pos] = EMPTY
-            # if curr_pos == farthest_pos:
-            #     continue
-            # elif self.__board[farthest_pos] == EMPTY:
-            #     self.__board[farthest_pos], self.__board[curr_pos] = \
-            #     self.__board[curr_pos], self.__board[farthest_pos]
-            # elif self.__board[farthest_pos].can_merge(self.__board[curr_pos]):
-            #     self.__board[farthest_pos].merge()
-            #     self.__board[curr_pos] = EMPTY
-            # else:
-            #     self.__board[prev_farthest_pos] = self.__board[curr_pos]
-            #     self.__board[curr_pos] = EMPTY
 
     def return_board(self):
         return self.__board
 
     def get_next_moves(self):
         moves = []
-        if self.__is_move_possible(TILES_UP_ORDER, utils.get_prev_tile_up,
-                                   utils.is_boundry_up):
-            moves.append(UP)
-        if self.__is_move_possible(TILES_RIGHT_ORDER, utils.get_prev_tile_right,
-                                   utils.is_boundry_right):
-            moves.append(RIGHT)
-        if self.__is_move_possible(TILES_DOWN_ORDER, utils.get_prev_tile_down,
-                                   utils.is_boundry_down):
-            moves.append(DOWN)
-        if self.__is_move_possible(TILES_LEFT_ORDER, utils.get_prev_tile_left,
-                                   utils.is_boundry_left):
-            moves.append(LEFT)
+        for direction in DIRECTION_LIST:
+            tiles_order = TILE_ORDER_DICT[direction]
+            prev_func = utils.GET_PREV_DICT[direction]
+            if self.__is_move_possible(tiles_order, prev_func):
+                moves.append(direction)
         return moves
 
     def print_board(self):
-        print('-'*BOARD_COLUMNS*2)
+        os.system('cls')
+        print('-'*BOARD_COLUMNS*5)
         for (i, j) in TILES_UP_ORDER:
-            if self.__board[(i,j)] == EMPTY:
-                print('0', end=" ")
+            if self.__board[(i, j)] == EMPTY:
+                print(repr(0).rjust(4), end="|")
             else:
-                print(self.__board[(i, j)].get_value(), end=" ")
+                print(repr(self.__board[(i, j)].get_value()).rjust(4), end="|")
             if j+1 == BOARD_COLUMNS:
-                print("\n")
+                print("\n"+'-'*BOARD_COLUMNS*5)
 
     def make_move(self, direction):
         tiles_order = TILE_ORDER_DICT[direction]
@@ -152,16 +127,17 @@ class Game:
 
     def start_game_human(self):
         self.__generate_tile(START_TILES)
-        self.print_board()
+
         next_possibles_moves = self.get_next_moves()
         while next_possibles_moves:
+            self.print_board()
             direction = sys.stdin.read(1)
-            if not direction in direction_list:
+            if direction not in DIRECTION_LIST or direction not in next_possibles_moves:
                 continue
             self.make_move(direction)
             self.__generate_tile()
-            self.print_board()
             next_possibles_moves = self.get_next_moves()
+        self.print_board()
 
 if __name__ == '__main__':
     g = Game()
