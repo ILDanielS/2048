@@ -61,7 +61,7 @@ class Game:
                 self.__board[pos] = Tile()
                 self.__board[pos].set_random_value()
 
-    def __is_move_possible(self, tile_order, prev_tile_func, boundry_func):
+    def __is_move_possible(self, tile_order, prev_tile_func):
         for curr_pos in filter(lambda x: self.__board[x] != EMPTY, tile_order):
             far_pos, pre_far_pos = self.__find_farthest_pos(curr_pos, prev_tile_func)
             is_out_bound = utils.out_of_board(far_pos)
@@ -100,18 +100,11 @@ class Game:
 
     def get_next_moves(self):
         moves = []
-        if self.__is_move_possible(TILES_UP_ORDER, utils.get_prev_tile_up,
-                                   utils.is_boundry_up):
-            moves.append(UP)
-        if self.__is_move_possible(TILES_RIGHT_ORDER, utils.get_prev_tile_right,
-                                   utils.is_boundry_right):
-            moves.append(RIGHT)
-        if self.__is_move_possible(TILES_DOWN_ORDER, utils.get_prev_tile_down,
-                                   utils.is_boundry_down):
-            moves.append(DOWN)
-        if self.__is_move_possible(TILES_LEFT_ORDER, utils.get_prev_tile_left,
-                                   utils.is_boundry_left):
-            moves.append(LEFT)
+        for direction in direction_list:
+            tiles_order = TILE_ORDER_DICT[direction]
+            prev_func = utils.GET_PREV_DICT[direction]
+            if self.__is_move_possible(tile_order, prev_func):
+                moves.append(direction)
         return moves
 
     def print_board(self):
