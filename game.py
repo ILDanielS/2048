@@ -88,7 +88,8 @@ class Game:
             farthest_pos, prev_farthest_pos = \
                                     self.__find_farthest_pos(curr_pos,
                                                              get_prev_tile_f)
-            if utils.out_of_board(farthest_pos) or self.__board[farthest_pos].get_value() != self.__board[curr_pos].get_value():
+            if (utils.out_of_board(farthest_pos) or
+                not self.__board[farthest_pos].can_merge(self.__board[curr_pos])):
                 self.__board[curr_pos], self.__board[prev_farthest_pos] = \
                                           EMPTY, self.__board[curr_pos]
             else:
