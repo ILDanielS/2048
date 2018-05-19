@@ -1,4 +1,5 @@
 import sys
+import os
 from random import randint, shuffle
 from const import *
 import utils
@@ -114,14 +115,15 @@ class Game:
         return moves
 
     def print_board(self):
-        print('-'*BOARD_COLUMNS*2)
+        os.system('cls')
+        print('-'*BOARD_COLUMNS*5)
         for (i, j) in TILES_UP_ORDER:
             if self.__board[(i, j)] == EMPTY:
-                print('0', end=" ")
+                print(repr(0).rjust(4), end="|")
             else:
-                print(self.__board[(i, j)].get_value(), end=" ")
+                print(repr(self.__board[(i, j)].get_value()).rjust(4), end="|")
             if j+1 == BOARD_COLUMNS:
-                print("\n")
+                print("\n"+'-'*BOARD_COLUMNS*5)
 
     def make_move(self, direction):
         tiles_order = TILE_ORDER_DICT[direction]
@@ -131,16 +133,17 @@ class Game:
 
     def start_game_human(self):
         self.__generate_tile(START_TILES)
-        self.print_board()
+
         next_possibles_moves = self.get_next_moves()
         while next_possibles_moves:
+            self.print_board()
             direction = sys.stdin.read(1)
             if direction not in direction_list or direction not in next_possibles_moves:
                 continue
             self.make_move(direction)
             self.__generate_tile()
-            self.print_board()
             next_possibles_moves = self.get_next_moves()
+        self.print_board()
 
 if __name__ == '__main__':
     g = Game()
