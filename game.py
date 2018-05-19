@@ -2,7 +2,7 @@ import sys
 from random import randint, shuffle
 from const import *
 import utils
-import pdb
+# import pdb
 class Tile:
 
     def __init__(self, value=0):
@@ -61,24 +61,16 @@ class Game:
                 self.__board[pos].set_random_value()
 
     def __is_move_possible(self, tile_order, prev_tile_func, boundry_func):
-        for curr_pos in tile_order:
-            prev_pos = prev_tile_func(*curr_pos)
-            if self.__board[curr_pos] == EMPTY:
-                continue
-            if (boundry_func(*prev_pos) and
-                    (self.__board[curr_pos] == self.__board[prev_pos] or
-                     self.__board[prev_pos] == EMPTY)):
+        for curr_pos in filter(lambda x: self.__board[x] != EMPTY, tile_order):
+            far_pos, pre_far_pos = self.__find_farthest_pos(curr_pos, prev_tile_func)
+            is_out_bound = utils.out_of_board(far_pos)
+            can_move = pre_far_pos != curr_pos
+            # pdb.set_trace()
+            if can_move or \
+            not is_out_bound and \
+            self.__board[curr_pos].can_merge(self.__board[far_pos]):
                 return True
         return False
-
-    # def __find_farthest_pos(self, pos, get_prev_tile_f):
-    #     prev_pos = pos#get_prev_tile_f(*pos)
-    #     pos = get_prev_tile_f(*pos)
-    #     while not utils.out_of_board(pos) and
-    #               self.__board[prev_pos] == EMPTY:
-    #         pos = prev_pos
-    #         prev_pos = get_prev_tile_f(*prev_pos)
-    #     return pos, prev_pos
 
     def __find_farthest_pos(self, pos, get_prev_tile_f):
         prev_pos = pos
@@ -88,9 +80,7 @@ class Game:
         return pos, prev_pos
 
     def __move_tiles(self, tiles_order, direction):
-
         get_prev_tile_f = utils.GET_PREV_DICT[direction]
-
         for curr_pos in filter(lambda x: self.__board[x] != EMPTY
                                , tiles_order):
             # pdb.set_trace()
@@ -126,7 +116,7 @@ class Game:
     def print_board(self):
         print('-'*BOARD_COLUMNS*2)
         for (i, j) in TILES_UP_ORDER:
-            if self.__board[(i,j)] == EMPTY:
+            if self.__board[(i, j)] == EMPTY:
                 print('0', end=" ")
             else:
                 print(self.__board[(i, j)].get_value(), end=" ")
@@ -145,7 +135,7 @@ class Game:
         next_possibles_moves = self.get_next_moves()
         while next_possibles_moves:
             direction = sys.stdin.read(1)
-            if not direction in direction_list:
+            if direction not in direction_list or direction not in next_possibles_moves:
                 continue
             self.make_move(direction)
             self.__generate_tile()
