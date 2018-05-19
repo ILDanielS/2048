@@ -10,8 +10,7 @@ UP = 'w'
 RIGHT = 'd'
 DOWN = 's'
 LEFT = 'a'
-
-direction_list = [UP,RIGHT,DOWN,LEFT]
+DIRECTION_LIST = [UP, RIGHT, DOWN, LEFT]
 # Keyboard character to direction
 
 TILES_UP_ORDER = [(x, y) for x in range(BOARD_ROWS)

@@ -89,7 +89,7 @@ class Game:
                                     self.__find_farthest_pos(curr_pos,
                                                              get_prev_tile_f)
             if (utils.out_of_board(farthest_pos) or
-                not self.__board[farthest_pos].can_merge(self.__board[curr_pos])):
+            not self.__board[farthest_pos].can_merge(self.__board[curr_pos])):
                 self.__board[curr_pos], self.__board[prev_farthest_pos] = \
                                           EMPTY, self.__board[curr_pos]
             else:
@@ -101,10 +101,10 @@ class Game:
 
     def get_next_moves(self):
         moves = []
-        for direction in direction_list:
+        for direction in DIRECTION_LIST:
             tiles_order = TILE_ORDER_DICT[direction]
             prev_func = utils.GET_PREV_DICT[direction]
-            if self.__is_move_possible(tile_order, prev_func):
+            if self.__is_move_possible(tiles_order, prev_func):
                 moves.append(direction)
         return moves
 
@@ -132,7 +132,7 @@ class Game:
         while next_possibles_moves:
             self.print_board()
             direction = sys.stdin.read(1)
-            if direction not in direction_list or direction not in next_possibles_moves:
+            if direction not in DIRECTION_LIST or direction not in next_possibles_moves:
                 continue
             self.make_move(direction)
             self.__generate_tile()
