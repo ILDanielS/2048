@@ -69,6 +69,15 @@ class Game:
                 self.__board[farthest_pos].merge()
                 self.__board[curr_pos] = EMPTY
 
+    # Is the state is a final state
+    def did_win(self):
+        for curr_pos in filter(lambda x: self.__board[x] != EMPTY, tiles_order):
+            if self.__board[curr_pos].get_value() == WINNING_THRESHOLD:
+                return True
+        return False
+
+
+
     def return_board(self):
         return self.__board
 
