@@ -84,9 +84,9 @@ class Game:
         empty_tiles_pos = self.__get_empty_tiles()
         for pos in empty_tiles_pos:
             tmp_board[pos] = Tile(2)
-            all_possible_tile_gen_list.append(0.8, tmp_board)
+            all_possible_tile_gen_list.append((0.8, tmp_board))
             tmp_board[pos].set_value(4)
-            all_possible_tile_gen_list.append(0.2, tmp_board)
+            all_possible_tile_gen_list.append((0.2, tmp_board))
             tmp_board = deepcopy(current_board)
 
         return all_possible_tile_gen_list
@@ -97,7 +97,7 @@ class Game:
         tmp_board = deepcopy(self.__board)
         for move in possible_moves:
             tmp_board.make_move(move)
-            boards_after_moves.append(tmp_board)
+            boards_after_moves.append((move, tmp_board))
             tmp_board = deepcopy(self.__board)
         return boards_after_moves
 
