@@ -91,6 +91,16 @@ class Game:
 
         return all_possible_tile_gen_list
 
+    def get_all_possible_moves(self):
+        possible_moves = self.get_next_moves()
+        boards_after_moves = []
+        tmp_board = deepcopy(self.__board)
+        for move in possible_moves:
+            tmp_board.make_move(move)
+            boards_after_moves.append(tmp_board)
+            tmp_board = deepcopy(self.__board)
+        return boards_after_moves
+
     def return_board(self):
         return self.__board
 
