@@ -2,6 +2,7 @@ import sys
 import os
 from random import randint, shuffle
 from tile import Tile
+from copy import deepcopy
 from const import *
 import utils
 
@@ -77,26 +78,18 @@ class Game:
         return False
 
     def get_all_possible_tile_gen(self):
-        current_board = self.__board
-        tmp_board = self.__board
+        current_board = deepcopy(self.__board)
+        tmp_board = deepcopy(self.__board)
         all_possible_tile_gen_list = []
         empty_tiles_pos = self.__get_empty_tiles()
         for pos in empty_tiles_pos:
-            tmp_board[pos] = 2
-            all_possible_tile_gen_list.append(tmp_board)
-            tmp_board[pos] = 4
-            all_possible_tile_gen_list.append(tmp_board)
-            tmp_board = current_board
+            tmp_board[pos] = Tile(2)
+            all_possible_tile_gen_list.append(0.8, tmp_board)
+            tmp_board[pos].set_value(4)
+            all_possible_tile_gen_list.append(0.2, tmp_board)
+            tmp_board = deepcopy(current_board)
 
         return all_possible_tile_gen_list
-
-        # for _ in range(0, num_of_tiles):
-        #     if not empty_tiles:
-        #         break
-        #     else:
-        #         pos = empty_tiles.pop()
-        #         self.__board[pos] = Tile()
-        #         self.__board[pos].set_random_value()
 
     def return_board(self):
         return self.__board
