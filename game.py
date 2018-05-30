@@ -15,7 +15,7 @@ class Game:
                         for i in range(BOARD_COLUMNS)
                         for j in range(BOARD_ROWS)}
         self.__verbose = verbose_flag
-        self.__turn = PLAYER
+        self.__turn = Turn.PLAYER
 
     def _gen_tile_at(self, place, number):
         self.__board[place] = Tile(number)
@@ -86,7 +86,7 @@ class Game:
         possible_tile_gen_list = []
         for pos in empty_tiles_pos:
             tmp_state = deepcopy(self)
-            tmp_state.__turn = PLAYER
+            tmp_state.__turn = Turn.PLAYER
             tmp_state._gen_tile_at(pos, 2)
             possible_tile_gen_list.append((0.8/16, tmp_state))
             tmp_state._gen_tile_at(pos, 4)
@@ -99,10 +99,11 @@ class Game:
         states_after_moves_list = []
         for move in possible_moves:
             tmp_state = deepcopy(self)
-            tmp_state.__turn = COMPUTER
+            tmp_state.__turn = Turn.COMPUTER
             tmp_state.make_move(move)
             states_after_moves_list.append((move, tmp_state))
         return states_after_moves_list
+
 
     def return_board(self):
         return self.__board
