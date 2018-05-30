@@ -36,7 +36,8 @@ class Game:
                 break
             else:
                 pos = empty_tiles.pop()
-                self._gen_tile_at(pos)
+                self.__board[pos] = Tile()
+                self.__board[pos].set_random_value()
 
     def __is_move_possible(self, tile_order, prev_tile_func):
         for curr_pos in filter(lambda x: self.__board[x] != EMPTY, tile_order):
