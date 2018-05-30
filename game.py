@@ -81,19 +81,18 @@ class Game:
                 return True
         return False
 
-    def get_all_possible_tile_gen(self):
-        current_board = deepcopy(self.__board)
-        tmp_board = deepcopy(self.__board)
-        all_possible_tile_gen_list = []
-        empty_tiles_pos = self.__get_empty_tiles()
-        for pos in empty_tiles_pos:
-            tmp_board[pos] = Tile(2)
-            all_possible_tile_gen_list.append((0.8, tmp_board))
-            tmp_board[pos].set_value(4)
-            all_possible_tile_gen_list.append((0.2, tmp_board))
-            tmp_board = deepcopy(current_board)
 
+    def get_all_possible_tile_gen(self):
+        possible_tile_gen_list = []
+        for pos in empty_tiles_pos:
+            tmp_state = deepcopy(self.__board)
+            tmp_state.__turn = PLAYER
+            tmp_state._gen_tile_at(pos, 2)
+            possible_tile_gen_list.append((0.8/16, tmp_state))
+            tmp_state._gen_tile_at(pos, 4)
+            possible_tile_gen_list.append((0.2/16, tmp_state))
         return all_possible_tile_gen_list
+
 
     def get_all_possible_moves(self):
         possible_moves = self.get_next_moves()
