@@ -85,7 +85,7 @@ class Game:
     def get_all_possible_tile_gen(self):
         possible_tile_gen_list = []
         for pos in empty_tiles_pos:
-            tmp_state = deepcopy(self.__board)
+            tmp_state = deepcopy(self)
             tmp_state.__turn = PLAYER
             tmp_state._gen_tile_at(pos, 2)
             possible_tile_gen_list.append((0.8/16, tmp_state))
