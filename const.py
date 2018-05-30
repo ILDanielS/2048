@@ -1,4 +1,6 @@
 ''' Consts and some more definitions to use in game module '''
+from Enum import enum
+
 # Board setup
 EMPTY = None
 BOARD_ROWS = 4
@@ -14,6 +16,12 @@ DOWN = 's'
 LEFT = 'a'
 DIRECTION_LIST = [UP, RIGHT, DOWN, LEFT]
 # Keyboard character to direction
+
+# Turn constants
+class Turn(enum):
+    PLAYER = 1
+    COMPUTER = 2
+
 
 TILES_UP_ORDER = [(x, y) for x in range(BOARD_ROWS)
                   for y in range(BOARD_COLUMNS)]
