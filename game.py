@@ -96,14 +96,13 @@ class Game:
 
     def get_all_possible_moves(self):
         possible_moves = self.get_next_moves()
-        boards_after_moves = []
-        tmp_board = deepcopy(self.__board)
+        states_after_moves_list = []
         for move in possible_moves:
-            tmp_board.make_move(move)
-            boards_after_moves.append((move, tmp_board))
-            tmp_board = deepcopy(self.__board)
-        return boards_after_moves
-
+            tmp_state = deepcopy(self)
+            tmp_state.__turn = COMPUTER
+            tmp_state.make_move(move)
+            states_after_moves_list.append((move, tmp_state))
+        return states_after_moves_list
 
     def return_board(self):
         return self.__board
