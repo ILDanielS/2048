@@ -15,6 +15,8 @@ class Game:
                         for i in range(BOARD_COLUMNS)
                         for j in range(BOARD_ROWS)}
         self.__verbose = verbose_flag
+    def _gen_tile_at(self, place, number):
+        self.__board[place] = Tile(number)
 
     def __get_empty_tiles(self):
         ''' Return list of empty tiles '''
