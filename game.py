@@ -104,8 +104,10 @@ class Game:
             tmp_board = deepcopy(self.__board)
         return boards_after_moves
 
+
     def return_board(self):
         return self.__board
+
 
     def get_next_moves(self):
         moves = []
@@ -115,6 +117,7 @@ class Game:
             if self.__is_move_possible(tiles_order, prev_func):
                 moves.append(direction)
         return moves
+
 
     def print_board(self):
         os.system('cls')
@@ -126,6 +129,7 @@ class Game:
                 print(repr(self.__board[(i, j)].get_value()).rjust(4), end="|")
             if j+1 == BOARD_COLUMNS:
                 print("\n"+'-'*BOARD_COLUMNS*5)
+
 
     def make_move(self, direction):
         tiles_order = TILE_ORDER_DICT[direction]
