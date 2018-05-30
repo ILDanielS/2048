@@ -15,6 +15,8 @@ class Game:
                         for i in range(BOARD_COLUMNS)
                         for j in range(BOARD_ROWS)}
         self.__verbose = verbose_flag
+        self.__turn = PLAYER
+
     def _gen_tile_at(self, place, number):
         self.__board[place] = Tile(number)
 
