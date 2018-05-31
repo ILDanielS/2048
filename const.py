@@ -1,5 +1,5 @@
 ''' Consts and some more definitions to use in game module '''
-from Enum import enum
+from enum import Enum
 
 # Board setup
 EMPTY = None
@@ -18,7 +18,7 @@ DIRECTION_LIST = [UP, RIGHT, DOWN, LEFT]
 # Keyboard character to direction
 
 # Turn constants
-class Turn(enum):
+class Turn(Enum):
     PLAYER = 1
     COMPUTER = 2
 
