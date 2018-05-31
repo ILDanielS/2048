@@ -121,6 +121,9 @@ class Game:
                 moves.append(direction)
         return moves
 
+    def get_turn(self):
+        return this.__turn
+
 
     def print_board(self):
         os.system('clear')
