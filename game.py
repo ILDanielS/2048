@@ -61,13 +61,13 @@ class Game:
     def __move_tiles(self, tiles_order, direction):
         get_prev_tile_f = utils.GET_PREV_DICT[direction]
         for curr_pos in filter(lambda x: self.__board[x] != EMPTY
-                               , tiles_order):
+                                    , tiles_order):
             # pdb.set_trace()
             farthest_pos, prev_farthest_pos = \
                                     self.__find_farthest_pos(curr_pos,
                                                              get_prev_tile_f)
             if (utils.out_of_board(farthest_pos) or
-            not self.__board[farthest_pos].can_merge(self.__board[curr_pos])):
+                    not self.__board[farthest_pos].can_merge(self.__board[curr_pos])):
                 self.__board[curr_pos], self.__board[prev_farthest_pos] = \
                                           EMPTY, self.__board[curr_pos]
             else:
@@ -76,7 +76,7 @@ class Game:
 
     # Is the state is a final state
     def did_win(self):
-        for curr_pos in filter(lambda x: self.__board[x] != EMPTY, tiles_order):
+        for curr_pos in filter(lambda x: self.__board[x] != EMPTY, TILES_UP_ORDER):
             if self.__board[curr_pos].get_value() == WINNING_THRESHOLD:
                 return True
         return False
@@ -84,17 +84,16 @@ class Game:
     def get_score(self):
         raise NotImplemented
 
-
     def get_all_possible_tile_gen(self):
         possible_tile_gen_list = []
-        for pos in empty_tiles_pos:
+        for pos in self.__get_empty_tiles():
             tmp_state = deepcopy(self)
             tmp_state.__turn = Turn.PLAYER
             tmp_state._gen_tile_at(pos, 2)
             possible_tile_gen_list.append((0.8/16, tmp_state))
             tmp_state._gen_tile_at(pos, 4)
             possible_tile_gen_list.append((0.2/16, tmp_state))
-        return all_possible_tile_gen_list
+        return possible_tile_gen_list
 
 
     def get_all_possible_moves(self):
@@ -122,7 +121,7 @@ class Game:
         return moves
 
     def get_turn(self):
-        return this.__turn
+        return self.__turn
 
 
     def print_board(self):

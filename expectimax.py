@@ -1,4 +1,5 @@
-from copy import deepcopy
+# from copy import deepcopy
+from const import Turn
 
 class Expectimax:
     def __init__(self, f_no_more_time):
@@ -20,12 +21,11 @@ class Expectimax:
 
         if self.f_no_more_time() or depth <= 0:
             return score_func(state)
-
-        if turn == Turn.COMPUTER:
-            sum = 0
+        if state.get_turn() == Turn.COMPUTER:
+            prob_sum = 0
             possible_gen_list = state.get_all_possible_tile_gen()
             for (prob, next_state) in possible_gen_list:
-                sum += prob * this.search(next_state, depth - 1)
+                prob_sum += prob * self.search(next_state, depth - 1, score_func)
             return sum
 
         next_moves = state.get_all_possible_moves()
@@ -33,11 +33,10 @@ class Expectimax:
         if not next_moves:
             return score_func(state)
 
-        selected_move = next_moves[0]
         best_score = 0
 
         for next_move, next_state in next_moves:
-            tmp_score = search(next_state, depth-1)
+            tmp_score = self.search(next_state, depth-1, score_func)
             if tmp_score > best_score:
                 selected_move = next_move
                 best_score = tmp_score
