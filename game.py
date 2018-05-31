@@ -123,7 +123,7 @@ class Game:
 
 
     def print_board(self):
-        os.system('cls')
+        os.system('clear')
         print('-'*BOARD_COLUMNS*5)
         for (i, j) in TILES_UP_ORDER:
             if self.__board[(i, j)] == EMPTY:
