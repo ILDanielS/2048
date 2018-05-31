@@ -81,6 +81,9 @@ class Game:
                 return True
         return False
 
+    def get_score(self):
+        raise NotImplemented
+
 
     def get_all_possible_tile_gen(self):
         possible_tile_gen_list = []
