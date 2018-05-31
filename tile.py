@@ -1,3 +1,5 @@
+from random import randint
+
 class Tile:
     def __init__(self, value=0):
         self.__value = value
