@@ -38,6 +38,7 @@ class Game:
                 pos = empty_tiles.pop()
                 self.__board[pos] = Tile()
                 self.__board[pos].set_random_value()
+                self.__score += self.__board[pos].get_value()
 
     def __is_move_possible(self, tile_order, prev_tile_func):
         for curr_pos in filter(lambda x: self.__board[x] != EMPTY, tile_order):
@@ -72,6 +73,7 @@ class Game:
                                           EMPTY, self.__board[curr_pos]
             else:
                 self.__board[farthest_pos].merge()
+                self.__score += self.__board[curr_pos].get_value()
                 self.__board[curr_pos] = EMPTY
 
     # Is the state is a final state
@@ -82,7 +84,7 @@ class Game:
         return False
 
     def get_score(self):
-        raise NotImplemented
+        return self.__score
 
     def get_all_possible_tile_gen(self):
         possible_tile_gen_list = []
