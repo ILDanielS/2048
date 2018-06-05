@@ -28,7 +28,7 @@ class Game:
                 empty_tiles.append(pos)
         return empty_tiles
 
-    def __generate_tile(self, num_of_tiles=1):
+    def generate_tile(self, num_of_tiles=1):
         empty_tiles = self.__get_empty_tiles()
         shuffle(empty_tiles)
         for _ in range(0, num_of_tiles):
@@ -109,7 +109,7 @@ class Game:
         return states_after_moves_list
 
 
-    def return_board(self):
+    def get_board(self):
         return self.__board
 
 
@@ -145,7 +145,7 @@ class Game:
             self.__board[pos].reset_tile_round_end()
 
     def start_game_human(self):
-        self.__generate_tile(START_TILES)
+        self.generate_tile(START_TILES)
 
         next_possibles_moves = self.get_next_moves()
         while next_possibles_moves:
@@ -154,7 +154,7 @@ class Game:
             if direction not in DIRECTION_LIST or direction not in next_possibles_moves:
                 continue
             self.make_move(direction)
-            self.__generate_tile()
+            self.generate_tile()
             next_possibles_moves = self.get_next_moves()
         self.print_board()
 
