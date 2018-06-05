@@ -146,8 +146,8 @@ class Game:
 
     def start_game_human(self):
         self.generate_tile(START_TILES)
-
         next_possibles_moves = self.get_next_moves()
+        
         while next_possibles_moves:
             self.print_board()
             direction = sys.stdin.read(1)
