@@ -1,0 +1,2 @@
+class AbstractPlayer:
+    pass
