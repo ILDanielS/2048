@@ -1,4 +1,3 @@
-import sys
 import os
 import game as g
 import const
@@ -25,9 +24,9 @@ class ConsoleManager:
     def start_game(self):
         self.__state.generate_tile(const.START_TILES)
         next_possibles_moves = self.__state.get_next_moves()
-        while not next_possibles_moves:
+        while next_possibles_moves:
             self.print_board()
-            direction = player.get_move()
+            direction = self.__player.get_move()
             if direction not in const.DIRECTION_LIST or \
                direction not in next_possibles_moves:
                 continue
