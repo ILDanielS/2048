@@ -1,8 +1,9 @@
 # from copy import deepcopy
 from const import Turn
+# from cost_functions import smoothness
 
 class Expectimax:
-    def __init__(self, f_no_more_time):
+    def __init__(self, f_no_more_time, to_purne=False):
         """ Initialize expectimax algorithm
             :param f_no_more_time - A functino that returns true if there is no
                                     more time to run this search
@@ -22,11 +23,16 @@ class Expectimax:
         if self.f_no_more_time() or depth <= 0:
             return score_func(state)
         if state.get_turn() == Turn.COMPUTER:
-            prob_sum = 0
+            min_smoothness = 0
+            min_smoothness_state = None
             possible_gen_list = state.get_all_possible_tile_gen()
             for (prob, next_state) in possible_gen_list:
-                prob_sum += prob * self.search(next_state, depth - 1, score_func)
-            return sum
+                curr_smoothness = prob * score_func(next_state)
+                if min_smoothness_state == None or curr_smoothness < min_smoothness:
+                    min_smoothness = curr_smoothness
+                    min_smoothness_state = next_state
+
+            return self.search(min_smoothness_state, depth, score_func)
 
         next_moves = state.get_all_possible_moves()
 
