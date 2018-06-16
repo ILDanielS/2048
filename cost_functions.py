@@ -45,12 +45,27 @@ def weighted_value(state):
     return score + smooth*2000
 
 
-def weighted_spots(state):
-    board = state.get_board()
-    exp = 4
+def weighted_spots(board):
+    # board = state.get_board()
+    base = 2
     magnitute = [16,15,14,13,9,10,11,12,8,7,6,5,1,2,3,2,1]
     score = 0
     for i in range(16):
         pos = TILES_UP_ORDER[i]
-        score += board[pos]*(magnitute[i]**exp)
+        score += board[pos]*(base**magnitute[i])
     return score
+
+def free_tiles(board):
+    score = 0
+    max_tile = 0
+    # board = state.get_board()
+    for pos in board:
+        if not board[pos]:
+            score += 2**8
+        else:
+            max_tile = max(max_tile, board[pos])
+    return score*max_tile
+
+def heuristic(state):
+    board = state.get_board()
+    return free_tiles(board) + weighted_spots(board)
