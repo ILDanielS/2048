@@ -85,7 +85,7 @@ class Game:
                 self.__board[curr_pos] = EMPTY
 
     # Is the state is a final state
-    def did_win(self):
+    def have_2048(self):
         for curr_pos in filter(lambda x: self.__board[x] != EMPTY, TILES_UP_ORDER):
             if self.__board[curr_pos].get_value() == WINNING_THRESHOLD:
                 return True
