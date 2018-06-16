@@ -1,11 +1,11 @@
 from time import sleep
 from minimax import Minimax
-from cost_functions import weighted_spots
+from cost_functions import weighted_spots, heuristic
 from const import INFTY
 
 class MinimaxPlayer:
     def __init__(self, max_depth, delay=0):
-        self.__minimax = Minimax(weighted_spots)
+        self.__minimax = Minimax(heuristic)
         self.__max_depth = max_depth
         self.__delay = delay
 
