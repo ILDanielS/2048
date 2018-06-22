@@ -47,7 +47,7 @@ def weighted_value(state):
 
 def weighted_spots(board):
     # board = state.get_board()
-    base = 2
+    base = 3
     magnitute = [16,15,14,13,9,10,11,12,8,7,6,5,1,2,3,2,1]
     score = 0
     for i in range(16):
@@ -61,7 +61,7 @@ def free_tiles(board):
     # board = state.get_board()
     for pos in board:
         if not board[pos]:
-            score += 2**9
+            score += 3**10
         else:
             max_tile = max(max_tile, board[pos])
     return score*max_tile
@@ -69,7 +69,7 @@ def free_tiles(board):
 def monotocity(board):
     score = 0
     base = 2
-    magnitute = [10,9,8,7, 9,8,7,6, 8,7,6,5, 7,6,5,4]
+    magnitute = [11,10,9,8, 10,9,8,7, 9,8,7,6, 8,7,6,5]
     for i in range(16):
         pos = TILES_UP_ORDER[i]
         score += board[pos]*(base**magnitute[i])
@@ -78,4 +78,4 @@ def monotocity(board):
 def heuristic(state):
     board = state.get_board()
 
-    return free_tiles(board) + monotocity(board)
+    return free_tiles(board) + weighted_spots(board) #monotocity(board)

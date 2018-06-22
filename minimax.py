@@ -1,6 +1,9 @@
 from const import Turn, INFTY
 from time import time
 
+class Timeout(Exception):
+    pass
+
 
 class Minimax:
     def __init__(self, score_func, timer):
@@ -8,10 +11,13 @@ class Minimax:
         self.__timer = timer
 
     def search(self, state, depth, alpha, beta):
-        turn = state.get_turn()
+        if self.__timer.is_over():
+            raise Timeout
+
         if depth == 0:
             return self.__score_func(state)
 
+        turn = state.get_turn()
         if turn == Turn.PLAYER:
             possible_moves_list = state.get_all_possible_moves()
             if not possible_moves_list:
@@ -56,15 +62,19 @@ class Minimax:
                 print("Reached", depth, "level")
 
             for move, next_state in all_possible_moves:
-                score = self.search(next_state, depth-1, -INFTY, INFTY)
-                if score >= best_score:
-                    best_move = move
-                    best_score = score
+                try:
+                    score = self.search(next_state, depth-1, -INFTY, INFTY)
+                except Timeout:
+                    return best_move
+                else:
+                    if score >= best_score:
+                        best_move = move
+                        best_score = score
 
-            # if time() - start_time >= run_time:
+            # # if time() - start_time >= run_time:
+            # #     break
+            # if self.__timer.is_over():
             #     break
-            if self.__timer.is_over():
-                break
 
             depth += 1
 

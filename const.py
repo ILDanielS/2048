@@ -22,7 +22,6 @@ class Turn(Enum):
     PLAYER = 1
     COMPUTER = 2
 
-#Infinities TODO: change the value to reperesent a real infinity
 INFTY = float('inf')
 
 TILES_UP_ORDER = [(x, y) for x in range(BOARD_ROWS)
