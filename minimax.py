@@ -3,8 +3,9 @@ from time import time
 
 
 class Minimax:
-    def __init__(self, score_func):
+    def __init__(self, score_func, timer):
         self.__score_func = score_func
+        self.__timer = timer
 
     def search(self, state, depth, alpha, beta):
         turn = state.get_turn()
@@ -41,8 +42,9 @@ class Minimax:
                     return -INFTY
             return min_score
 
-    def iterative_deepening(self, state, run_time, verbose_flag):
-        start_time = time()
+    def iterative_deepening(self, state, verbose_flag):
+        # start_time = time()
+        self.__timer.start_timer()
         depth = 1
         all_possible_moves = state.get_all_possible_moves()
 
@@ -59,8 +61,11 @@ class Minimax:
                     best_move = move
                     best_score = score
 
-            if time() - start_time >= run_time:
+            # if time() - start_time >= run_time:
+            #     break
+            if self.__timer.is_over():
                 break
+
             depth += 1
 
         return best_move

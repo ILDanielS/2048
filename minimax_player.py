@@ -2,12 +2,13 @@ from time import sleep
 from minimax import Minimax
 from cost_functions import weighted_spots, heuristic
 from const import INFTY
+from timer import Timer
 
 class MinimaxPlayer:
     def __init__(self, max_depth, time):
-        self.__minimax = Minimax(heuristic)
+        self.__timer = Timer(time)
+        self.__minimax = Minimax(heuristic, self.__timer)
         self.__max_depth = max_depth
-        self.__time = time
         # self.__delay = delay
 
     def get_move(self, state):
@@ -27,4 +28,4 @@ class MinimaxPlayer:
         return self.get_move_iterative(state)
 
     def get_move_iterative(self, state):
-        return self.__minimax.iterative_deepening(state, self.__time, True)
+        return self.__minimax.iterative_deepening(state, True)
