@@ -55,7 +55,7 @@ class Minimax:
         all_possible_moves = state.get_all_possible_moves()
 
         best_move = None
-        best_score = 0
+        best_score = -INFTY
 
         while(True):
             if verbose_flag:

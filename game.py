@@ -121,7 +121,6 @@ class Game:
 
 
     def get_all_possible_moves(self):
-        start_time = time()
         if self.__gen_all_possible_tiles:
             # print("---- %s seconds ----" %(time() - start_time))
             return self.__all_possible_tiles
@@ -129,7 +128,6 @@ class Game:
         current_state = deepcopy(self)
         current_state.__all_possible_moves = []
         current_state.__all_possible_tiles = []
-
         possible_moves = self.get_next_moves()
         states_after_moves_list = []
         for move in possible_moves:

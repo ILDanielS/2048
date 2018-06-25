@@ -1,40 +1,27 @@
 from const import TILES_UP_ORDER, TILES_RIGHT_ORDER, BOARD_COLUMNS, BOARD_ROWS
 
 def smoothness_rows(board):
-    plus_signs = 0
-    minus_signs = 0
-
+    diff = 0
     for i,j in TILES_UP_ORDER:
-        if j == BOARD_COLUMNS-1:
+        if j == BOARD_COLUMNS-1 or not board[(i,j)] or not board[(i,j+1)]:
             continue
-        diff = board[(i,j)] - board[(i,j+1)]
-        if diff > 0:
-            plus_signs += 1
-        elif diff < 0:
-            minus_signs += 1
+        diff += abs(board[(i,j)] - board[(i,j+1)])
 
-    return abs(plus_signs - minus_signs)
+    return diff
 
 
 def smoothness_columns(board):
-    plus_signs = 0
-    minus_signs = 0
-
+    diff = 0
     for i,j in TILES_RIGHT_ORDER:
-        if i == BOARD_ROWS-1:
+        if i == BOARD_ROWS-1 or not board[(i,j)] or not board[(i+1, j)]:
             continue
-        diff = board[(i, j)] - board[(i+1, j)]
-        if diff > 0:
-            plus_signs += 1
-        elif diff < 0:
-            minus_signs += 1
+        diff += abs(board[(i, j)] - board[(i+1, j)])
 
-    return abs(plus_signs - minus_signs)
+    return diff
 
 
-def smoothness(state):
-    board = state.get_board()
-    return -1*max(smoothness_rows(board), smoothness_columns(board))
+def smoothness(board):
+    return -1*(smoothness_rows(board) + smoothness_columns(board))
 
 def game_score(state):
     return state.get_score()
